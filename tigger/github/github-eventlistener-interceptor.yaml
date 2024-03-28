@@ -28,6 +28,7 @@ spec:
         ref: github-template
   resources:
     kubernetesResource:
+      serviceType: LoadBalancer
       spec:
         template:
           spec:
