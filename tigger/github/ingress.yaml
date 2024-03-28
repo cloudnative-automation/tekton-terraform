@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+  name: el-github-listener
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: el-github-listener.51.cafe
+      http:
+        paths:
+          - backend:
+              service:
+                name: el-github-listener
+                port:
+                  number: 8080
+            path: /
+            pathType: Prefix
+  tls:
+    - hosts:
+        - el-github-listener.51.cafe
+      secretName: el-github-listener
