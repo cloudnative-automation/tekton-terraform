@@ -1,0 +1,22 @@
+---
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  labels:
+    tekton.dev/task: github-set-status
+  name: github-set-status-run-on-pr-70f
+spec:
+  taskRef:
+    kind: Task
+    name: github-set-status
+  params:
+    - name: REPO_FULL_NAME
+      value: cloudnative-automation/tekton-terraform
+    - name: SHA
+      value: 70f996690fa87119221aa851b01121f08f593d11
+    - name: DESCRIPTION
+      value: "Build has started"
+    - name: STATE
+      value: pending
+    - name: TARGET_URL
+      value: http://localhost:9097/#/namespaces/default/taskruns
