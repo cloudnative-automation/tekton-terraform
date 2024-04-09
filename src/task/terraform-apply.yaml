@@ -1,0 +1,26 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: terraform-apply
+spec:
+  resources:
+    inputs:
+      - name: source
+        type: git
+  workspaces:
+    - name: source
+      mountPath: /workspace/source
+  steps:
+    - name: terraform-apply-approval
+      resources:
+        requests:
+          memory: 256Mi
+          cpu: 200m
+        limits:
+          memory: 512Mi
+          cpu: 500m       
+      image: example.io/terraform-cli:1.0 # 这里的image替换成自己的image，只要image中有terraform命令即可
+      workingDir: /workspace/source
+      command: ["terraform"]
+      args: ["apply","--auto-approval"]
+   

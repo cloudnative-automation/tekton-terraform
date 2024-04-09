@@ -1,0 +1,129 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  annotations:
+    tekton.dev/pipelines.minVersion: 0.12.1
+    tekton.dev/platforms: linux/amd64
+    tekton.dev/tags: pull_request
+  labels:
+    app.kubernetes.io/version: "0.1"
+  name: terraform-cli-pull-request
+spec:
+  finally:
+  - name: report-pipeline-status-to-github
+    params:
+    - name: REPO_FULL_NAME
+      value: $(params.gitrepofullname)
+    - name: REQUEST_URL
+      value: $(params.gitprurl)
+    - name: SHA
+      value: $(params.gitrevision)
+    - name: DESCRIPTION
+      value: The build triggered!
+    - name: STATE
+      value: $(tasks.terraform-plan.status)
+    - name: TARGET_URL
+      value: https://tekton.51.cafe/#/namespaces/tekton-terraform/pipelineruns/$(context.pipelineRun.name)?pipelineTask=terraform-plan
+    taskRef:
+      kind: Task
+      name: github-set-status
+    workspaces:
+    - name: source
+      workspace: git-source
+  params:
+  - description: The git revision (SHA)
+    name: gitrevision
+    type: string
+  - description: The git repository url ("https://github.com/foo/bar.git")
+    name: gitrepositoryurl
+    type: string
+  - description: The GitHub repository full name, i.e:cloudnative-automation/tekton-terraform
+    name: gitrepofullname
+    type: string
+  - description: The GitHub pull request url, i.e:https://github.com/cloudnative-automation/tekton-terraform/pull/6.
+    name: gitprurl
+    type: string
+  - description: The GitHub repository name, i.e:cloudnative-automation/tekton-terraform
+    name: gitreponame
+    type: string
+  tasks:
+  - name: fetch-from-git
+    params:
+    - name: url
+      value: $(params.gitrepositoryurl)
+    - name: revision
+      value: $(params.gitrevision)
+    - name: subdirectory
+      value: $(params.gitreponame)
+    taskRef:
+      kind: Task
+      name: git-clone
+    workspaces:
+    - name: output
+      workspace: git-source
+  - name: terraform-plan
+    params:
+    - name: reponame
+      value: $(params.gitreponame)
+    runAfter:
+    - fetch-from-git
+    taskRef:
+      kind: Task
+      name: terraform-cli
+    workspaces:
+    - name: source
+      workspace: git-source
+    - name: secrets
+      workspace: aws-secrets
+    - name: azure-secrets
+      workspace: azure-secrets
+  - name: git-commit-terraform-results
+    params:
+    - name: COMMENT_OR_FILE
+      value: tfplan.txt
+    - name: REQUEST_URL
+      value: $(params.gitprurl)
+    - name: COMMENT_TAG
+      value: $(params.gitrevision)
+    - name: SUBDIRECTORY
+      value: $(params.gitreponame)
+    runAfter:
+    - terraform-plan
+    taskRef:
+      kind: Task
+      name: github-add-comment
+    workspaces:
+    - name: comment-file
+      workspace: git-source
+  - name: trivy-check
+    params:
+    - name: subdirectory
+      value: $(params.gitreponame)
+    runAfter:
+    - terraform-plan
+    taskRef:
+      kind: Task
+      name: terraform-pr-trivy
+    workspaces:
+    - name: source
+      workspace: git-source
+  - name: git-commit-trivy-results
+    params:
+    - name: COMMENT_OR_FILE
+      value: trivy.txt
+    - name: REQUEST_URL
+      value: $(params.gitprurl)
+    - name: COMMENT_TAG
+      value: $(params.gitrevision)
+    - name: SUBDIRECTORY
+      value: $(params.gitreponame)
+    runAfter:
+    - trivy-check
+    taskRef:
+      kind: Task
+      name: github-add-comment
+    workspaces:
+    - name: comment-file
+      workspace: git-source
+  workspaces:
+  - name: git-source

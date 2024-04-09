@@ -19,3 +19,5 @@ https://docs.github.com/en/webhooks/using-webhooks/creating-webhooks
 `src/k8s` -> 集群配置
 
 `src/trigger` -> github trigger配置
+
+`docs/` -> 相关文档
