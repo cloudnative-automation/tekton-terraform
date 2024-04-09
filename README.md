@@ -25,17 +25,17 @@ https://docs.github.com/en/webhooks/using-webhooks/creating-webhooks
 
 ## GitOps的一些官方文档
 
-AWS ![setting-up-a-ci-cd-pipeline-by-integrating-jenkins-with-aws-codebuild-and-aws-codedeploy](https://aws.amazon.com/cn/blogs/devops/setting-up-a-ci-cd-pipeline-by-integrating-jenkins-with-aws-codebuild-and-aws-codedeploy/)
+AWS [setting-up-a-ci-cd-pipeline-by-integrating-jenkins-with-aws-codebuild-and-aws-codedeploy](https://aws.amazon.com/cn/blogs/devops/setting-up-a-ci-cd-pipeline-by-integrating-jenkins-with-aws-codebuild-and-aws-codedeploy/)
 
-Azure ![gitops-blueprint-aks](https://learn.microsoft.com/en-us/azure/architecture/example-scenario/gitops-aks/gitops-blueprint-aks)
+Azure [gitops-blueprint-aks](https://learn.microsoft.com/en-us/azure/architecture/example-scenario/gitops-aks/gitops-blueprint-aks)
 
 
 GCP
-![gitops-cloud-build](https://cloud.google.com/kubernetes-engine/docs/tutorials/gitops-cloud-build?hl=zh-cn)
+[gitops-cloud-build](https://cloud.google.com/kubernetes-engine/docs/tutorials/gitops-cloud-build?hl=zh-cn)
 
-![solutions-terraform-jenkins-gitops](https://github.com/GoogleCloudPlatform/solutions-terraform-jenkins-gitops)
+[solutions-terraform-jenkins-gitops](https://github.com/GoogleCloudPlatform/solutions-terraform-jenkins-gitops)
 
-Redhat ![developers-guide-cicd-and-gitops-jenkins-pipelines](https://developers.redhat.com/articles/2022/01/13/developers-guide-cicd-and-gitops-jenkins-pipelines)
+Redhat [developers-guide-cicd-and-gitops-jenkins-pipelines](https://developers.redhat.com/articles/2022/01/13/developers-guide-cicd-and-gitops-jenkins-pipelines)
 
 
 
