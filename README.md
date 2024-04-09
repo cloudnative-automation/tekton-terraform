@@ -12,7 +12,10 @@ https://docs.github.com/en/webhooks/using-webhooks/creating-webhooks
 
 ## 目录
 
-src/pipeline -> 流水线配置
-src/task -> task配置
-src/k8s -> 集群配置
-src/trigger -> github trigger配置
+`src/pipeline` -> 流水线配置
+
+`src/task` -> task配置
+
+`src/k8s` -> 集群配置
+
+`src/trigger` -> github trigger配置
